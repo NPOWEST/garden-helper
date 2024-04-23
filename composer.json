@@ -1,0 +1,19 @@
+{
+    "name": "npowest/garden-helper",
+    "type": "library",
+    "require": {
+        "php": ">=8.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Npowest\\GardenHelper\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Virus3D",
+            "email": "viisto@yandex.ru"
+        }
+    ]
+}
