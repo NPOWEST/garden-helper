@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace npowest\garden\device\enum;
+namespace Npowest\GardenHelper\Enum;
 
-enum si : string
+enum SIEnum : string
 {
 	case s = 's';
 

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace npowest\garden\device\enum;
+namespace Npowest\GardenHelper\Enum;
 
-enum current_mode : string
+enum CurrentModeSaveEnum : string
 {
 	case full = 'full';
 

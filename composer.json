@@ -15,5 +15,14 @@
             "name": "Virus3D",
             "email": "viisto@yandex.ru"
         }
-    ]
+    ],
+    "require-dev": {
+        "nunomaduro/phpinsights": "^2.11",
+        "squizlabs/php_codesniffer": "^3.9"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
 }

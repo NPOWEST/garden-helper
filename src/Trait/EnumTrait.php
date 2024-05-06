@@ -2,20 +2,29 @@
 
 declare(strict_types = 1);
 
-namespace npowest\garden\device\enum;
+namespace Npowest\GardenHelper\Trait;
 
-trait to_array
+trait EnumTrait
 {
+	/**
+	 * @return list<string>
+	 */
 	public static function names() : array
 	{
 		return array_column(self::cases(), 'name');
 	}//end names()
 
+	/**
+	 * @return list<string|int>
+	 */
 	public static function values() : array
 	{
 		return array_column(self::cases(), 'value');
 	}//end values()
 
+	/**
+	 * @return array<string, string|list>
+	 */
 	public static function array() : array
 	{
 		return array_combine(self::values(), self::names());
