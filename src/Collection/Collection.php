@@ -13,7 +13,7 @@ use IteratorAggregate;
  * @implements ArrayAccess<string, int|float|string>
  * @implements IteratorAggregate<string, int|float|string>
  */
-final class Collection implements ArrayAccess, Countable, IteratorAggregate
+class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
 	/** @var array<string, float|int|string> */
 	private array $data = [];
