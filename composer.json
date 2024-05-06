@@ -1,9 +1,7 @@
 {
     "name": "npowest/garden-helper",
+    "description": "Emum, Collection for NPOWEST Garden",
     "type": "library",
-    "require": {
-        "php": ">=8.2"
-    },
     "license": "MIT",
     "autoload": {
         "psr-4": {
