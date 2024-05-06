@@ -15,7 +15,7 @@ final class Mask
 	{
 		$mask = \is_string($mask) ? $mask : '';
 
-		$this->mask = mb_str_pad(mb_substr($mask, 0, 5), 5, 'n');
+		$this->mask = mb_str_pad(mb_substr($mask, 0, 5), 5, MaskEnum::n->name);
 
 		$MaskEnum = MaskEnum::names();
 		for ($i = 0; $i < 5; $i++)
@@ -34,7 +34,7 @@ final class Mask
 
 	public function is(MaskEnum $type) : bool
 	{
-		return mb_strtolower($this->mask[$type->lalue]) === $type->name;
+		return mb_strtolower($this->mask[$type->value]) === $type->name;
 	}//end is()
 
 	public function notOrder() : bool
@@ -44,7 +44,7 @@ final class Mask
 
 	public function isRead(MaskEnum $type) : bool
 	{
-		return $this->mask[$type->lalue] === mb_strtoupper($type->name);
+		return $this->mask[$type->value] === mb_strtoupper($type->name);
 	}//end isRead()
 
 	public function del(MaskEnum $type) : void
@@ -54,6 +54,6 @@ final class Mask
 			return;
 		}
 
-		$this->mask[$type->lalue] = MaskEnum::n->value;
+		$this->mask[$type->value] = MaskEnum::n->name;
 	}//end del()
 }//end class
