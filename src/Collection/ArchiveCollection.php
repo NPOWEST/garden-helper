@@ -52,7 +52,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	 * Retrieves a  value
 	 *
 	 * @param SIEnum $key
-
+	 *
 	 * @throws InvalidKey
 	 */
 	public function offsetGet(mixed $key) : mixed
@@ -70,9 +70,9 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	 *
 	 * The  change will not persist. It will be lost after the request
 	 *
-	 * @param SIEnum $key
+	 * @param SIEnum                        $key
 	 * @param array<string, DataCollection> $value
-
+	 *
 	 * @throws Exception
 	 */
 	public function offsetSet(mixed $key, mixed $value) : void
@@ -84,7 +84,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	 * Called when deleting a  value directly, triggers an error
 	 *
 	 * @param SIEnum $key
-
+	 *
 	 * @throws Exception
 	 */
 	public function offsetUnset(mixed $key) : void

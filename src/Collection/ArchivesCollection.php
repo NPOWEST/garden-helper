@@ -73,7 +73,7 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	 * The  change will not persist. It will be lost
 	 * after the request.
 	 *
-	 * @param int                $key
+	 * @param int               $key
 	 * @param ArchiveCollection $value
 	 *
 	 * @throws Exception

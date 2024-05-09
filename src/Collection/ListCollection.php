@@ -180,7 +180,7 @@ final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 	 */
 	public function overlayArray(array $data) : void
 	{
-		foreach ($this->data as $cnl => $data_old)
+		foreach ($this->data as $cnl => $oldData)
 		{
 			if (! isset($data[$cnl]) || ! \is_array($data[$cnl]))
 			{
@@ -189,7 +189,7 @@ final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 
 			$this->data[$cnl] = new DataCollection();
 			$this->setFromArray($data[$cnl], $cnl);
-			$this->setFromArray($data_old->toArray(), $cnl);
+			$this->setFromArray($oldData->toArray(), $cnl);
 			unset($data[$cnl]);
 		}
 
@@ -198,14 +198,14 @@ final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 			return;
 		}
 
-		foreach ($data as $cnl => $data_new)
+		foreach ($data as $cnl => $newData)
 		{
-			if (! \is_array($data_new) || ! \is_int($cnl))
+			if (! \is_array($newData) || ! \is_int($cnl))
 			{
 				continue;
 			}
 			$this->data[$cnl] = new DataCollection();
-			$this->setFromArray($data_new, $cnl);
+			$this->setFromArray($newData, $cnl);
 		}
 	}//end overlayArray()
 

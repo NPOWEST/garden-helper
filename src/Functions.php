@@ -6,13 +6,13 @@ namespace Npowest\GardenHelper;
 
 final class Functions
 {
-	public static function between(float|int $x, float|int $lower, float|int $upper) : bool
+	public static function between(float|int $value, float|int $lower, float|int $upper) : bool
 	{
 		if ($lower > $upper)
 		{
 			[$lower, $upper] = [$upper, $lower];
 		}
 
-		return ($x >= $lower) && ($x <= $upper);
+		return ($value >= $lower) && ($value <= $upper);
 	}//end between()
 }//end class

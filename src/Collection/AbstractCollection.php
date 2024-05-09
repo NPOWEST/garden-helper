@@ -13,7 +13,7 @@ use IteratorAggregate;
  * @implements ArrayAccess<string, int|float|string>
  * @implements IteratorAggregate<string, int|float|string>
  */
-class Collection implements ArrayAccess, Countable, IteratorAggregate
+abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAggregate
 {
 	/** @var array<string, float|int|string> */
 	private array $data = [];
@@ -21,7 +21,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	/**
 	 * @param array<mixed> $data
 	 */
-	public function setFromArray(array $data) : void
+	final public function setFromArray(array $data) : void
 	{
 		foreach ($data as $key => $value)
 		{
@@ -37,9 +37,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 		}
 	}//end setFromArray()
 
-	public function setFromString(string $str) : void
+	final public function setFromString(string $str) : void
 	{
-		/** @var array<mixed>|false */
+		/** @var array<mixed>|false $data */
 		$data = json_decode($str, true);
 		if ($data === false)
 		{
@@ -54,7 +54,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	 *
 	 * @return ArrayIterator An iterator over all data
 	 */
-	public function getIterator() : ArrayIterator
+	final public function getIterator() : ArrayIterator
 	{
 		return new ArrayIterator($this->data);
 	}//end getIterator()
@@ -66,7 +66,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	 *
 	 * @return bool whether the  option exists
 	 */
-	public function offsetExists(mixed $key) : bool
+	final public function offsetExists(mixed $key) : bool
 	{
 		return isset($this->data[$key]);
 	}//end offsetExists()
@@ -78,7 +78,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	 *
 	 * @return float|int|string The  value
 	 */
-	public function offsetGet(mixed $key) : mixed
+	final public function offsetGet(mixed $key) : mixed
 	{
 		return $this->data[$key] ?? '';
 	}//end offsetGet()
@@ -89,10 +89,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	 * The  change will not persist. It will be lost
 	 * after the request.
 	 *
-	 * @param string           $key   the  option's name
+	 * @param string|null      $key   the  option's name
 	 * @param float|int|string $value the temporary value
 	 */
-	public function offsetSet(mixed $key, mixed $value) : void
+	final public function offsetSet(mixed $key, mixed $value) : void
 	{
 		$this->set($key, $value);
 	}//end offsetSet()
@@ -104,7 +104,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	 *
 	 * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
 	 */
-	public function offsetUnset(mixed $key) : void
+	final public function offsetUnset(mixed $key) : void
 	{
 		trigger_error('Config values have to be deleted explicitly with the \phpbb\config\config::delete($key) method.', E_USER_ERROR);
 	}//end offsetUnset()
@@ -114,7 +114,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	 *
 	 * @return int Number of config options
 	 */
-	public function count() : int
+	final public function count() : int
 	{
 		return \count($this->data);
 	}//end count()
@@ -122,7 +122,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	/**
 	 * @return array<string, float|int|string>
 	 */
-	public function toArray() : array
+	final public function toArray() : array
 	{
 		return $this->data;
 	}//end toArray()
@@ -132,12 +132,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	 *
 	 * @param string $key The  option's name
 	 */
-	public function delete(string $key) : void
+	final public function delete(string $key) : void
 	{
 		unset($this->data[$key]);
 	}//end delete()
 
-	public function set(string $key, mixed $value) : void
+	final public function set(string $key, mixed $value) : void
 	{
 		if (\is_int($value) || \is_float($value) || \is_string($value))
 		{
@@ -145,17 +145,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 		}
 	}//end set()
 
-	public function empty() : bool
+	final public function empty() : bool
 	{
 		return empty($this->data);
 	}//end empty()
 
-	public function merge(self $data) : void
+	final public function merge(self $data) : void
 	{
 		$this->setFromArray($data->toArray());
 	}//end merge()
 
-	public function overlay(self $data) : void
+	final public function overlay(self $data) : void
 	{
 		$this->overlayArray($data->toArray());
 	}//end overlay()
@@ -163,7 +163,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 	/**
 	 * @param array<mixed> $data [description]
 	 */
-	public function overlayArray(array $data) : void
+	final public function overlayArray(array $data) : void
 	{
 		$tmp = $this->data;
 		$this->setFromArray($data);

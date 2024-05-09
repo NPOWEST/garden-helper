@@ -15,7 +15,7 @@ trait EnumTrait
 	}//end names()
 
 	/**
-	 * @return list<string|int>
+	 * @return list<int|string>
 	 */
 	public static function values() : array
 	{
@@ -23,7 +23,7 @@ trait EnumTrait
 	}//end values()
 
 	/**
-	 * @return array<string, string|list>
+	 * @return array<string, list|string>
 	 */
 	public static function array() : array
 	{

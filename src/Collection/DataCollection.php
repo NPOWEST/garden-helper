@@ -25,22 +25,22 @@ final class DataCollection extends Collection
 			}
 
 			/** @var array<string, int> */
-			$msg     = [];
-			$max_lvl = 0;
+			$msg    = [];
+			$maxLvl = 0;
 
 			foreach ($values as $value)
 			{
 				\assert(\is_string($value));
-				$value   = explode('__', $value);
-				$lvl     = (int) ($value[1] ?? 0);
-				$max_lvl = max($max_lvl, $lvl);
+				$value  = explode('__', $value);
+				$lvl    = (int) ($value[1] ?? 0);
+				$maxLvl = max($maxLvl, $lvl);
 
 				$msg[$value[0]] = $lvl;
 			}
 
 			$this->error[$key] = [
-				'max_lvl' => $max_lvl,
-				'msg'     => $msg,
+				'maxLvl' => $maxLvl,
+				'msg'    => $msg,
 			];
 		}//end foreach
 	}//end setErrorFromArray()
@@ -61,7 +61,7 @@ final class DataCollection extends Collection
 	public function getMaxLvl(string $key) : int
 	{
 		/** @var int */
-		return $this->error[$key]['max_lvl'] ?? 0;
+		return $this->error[$key]['maxLvl'] ?? 0;
 	}//end getMaxLvl()
 
 	/**

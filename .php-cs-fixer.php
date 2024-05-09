@@ -2,9 +2,11 @@
 
 // https://cs.symfony.com
 
-$config = new PhpCsFixer\Config();
+$finder = (new PhpCsFixer\Finder())
+    ->in('./')
+;
 
-return $config
+return (new PhpCsFixer\Config())
     ->setRules([
         /** Alias */
 
@@ -523,4 +525,5 @@ return $config
         // //     'position_after_control_structures'           => 'next',
         // //     'position_after_functions_and_oop_constructs' => 'next'
         // // ],
-    ])->setIndent("\t");
+    ])->setIndent("\t")
+    ->setFinder($finder);

@@ -69,7 +69,7 @@ return [
 		],
 		BinaryOperatorSpacesFixer::class  => [
 			// default fix strategy: possibles values ['align', 'align_single_space', 'align_single_space_minimal', 'single_space', 'no_space', null]
-			'default'            => 'align_single_space_minimal',
+			'default' => 'align_single_space_minimal',
 		],
 		OrderedClassElementsFixer::class  => [
 			// List of strings defining order of elements.

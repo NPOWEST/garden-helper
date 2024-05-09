@@ -17,10 +17,10 @@ final class Mask
 
 		$this->mask = mb_str_pad(mb_substr($mask, 0, 5), 5, MaskEnum::n->name);
 
-		$MaskEnum = MaskEnum::names();
+		$maskEnum = MaskEnum::names();
 		for ($i = 0; $i < 5; $i++)
 		{
-			if (! \in_array($this->mask[$i], $MaskEnum))
+			if (! \in_array($this->mask[$i], $maskEnum))
 			{
 				$this->mask[$i] = MaskEnum::n->name;
 			}

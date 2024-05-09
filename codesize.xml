@@ -50,10 +50,10 @@
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
         <properties>
+            <property name="maxmethods" value="12"/>
             <property name="ignorepattern" value="(^(set|get))i"/>
         </properties>
     </rule>
-    <rule ref="rulesets/codesize.xml/TooManyPublicMethods"/>
     <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
         <properties>
             <property name="maximum" value="130"/>
