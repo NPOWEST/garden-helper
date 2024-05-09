@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHP
 
 on:
   push:
@@ -169,13 +169,13 @@ jobs:
       - name: Run phpstan
         run: ./vendor/bin/phpstan analyse -c phpstan.neon.dist
 
-    phpinsights:
-        runs-on: ubuntu-latest
-        name: PHP Insights checks
-        steps:
-            - uses: actions/checkout@v2
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 8.2
-            - run: composer install --prefer-dist --no-progress --no-suggest
-            - run: vendor/bin/phpinsights -n --ansi --format=github-action
+  phpinsights:
+      runs-on: ubuntu-latest
+      name: PHP Insights checks
+      steps:
+          - uses: actions/checkout@v2
+          - uses: shivammathur/setup-php@v2
+            with:
+                php-version: 8.2
+          - run: composer install --prefer-dist --no-progress --no-suggest
+          - run: vendor/bin/phpinsights -n --ansi --format=github-action
