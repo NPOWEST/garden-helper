@@ -6,7 +6,7 @@ namespace Npowest\GardenHelper\Enum;
 
 use Npowest\GardenHelper\Trait\EnumTrait;
 
-enum ArhiveTypeSaveEnum : string
+enum ArchiveTypeSaveEnum : string
 {
 	use EnumTrait;
 

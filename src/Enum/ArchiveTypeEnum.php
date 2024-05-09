@@ -6,7 +6,7 @@ namespace Npowest\GardenHelper\Enum;
 
 use Npowest\GardenHelper\Trait\EnumTrait;
 
-enum ArhiveTypeEnum : string
+enum ArchiveTypeEnum : string
 {
 	use EnumTrait;
 
@@ -14,7 +14,11 @@ enum ArhiveTypeEnum : string
 
 	case d = 'd';
 
+	case D = 'D';
+
 	case h = 'h';
+
+	case H = 'H';
 
 	case m = 'm';
 
