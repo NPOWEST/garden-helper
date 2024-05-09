@@ -7,7 +7,7 @@ namespace Npowest\GardenHelper\Collection;
 /**
  * archive data class
  */
-final class DataCollection extends Collection
+final class DataCollection extends AbstractCollection
 {
 	/** @var array<string, array<array<string, int>|int>> */
 	protected array $error = [];
