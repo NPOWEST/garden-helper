@@ -15,7 +15,7 @@ use Npowest\GardenHelper\Collection\Exception\{InvalidKey, InvalidValue};
  * @implements ArrayAccess<int, DataCollection>
  * @implements IteratorAggregate<int, DataCollection>
  */
-final class CurrentCollection implements ArrayAccess, Countable, IteratorAggregate
+final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 {
 	/** @var array<int, DataCollection> */
 	private array $data = [];

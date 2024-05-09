@@ -14,7 +14,7 @@ use Npowest\GardenHelper\Enum\SIEnum;
 
 final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggregate
 {
-	private bool $check_availability = true;
+	private bool $checkAvailability = true;
 
 	/** @var array<SIEnum, array<string, DataCollection>> [type : [date : DataCollection]] */
 	private array $data = [SIEnum::s => [], SIEnum::i => []];
@@ -22,7 +22,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	private ?DataCollection $total = null;
 
 	/**
-	 * Retrieves an ArrayIterator over the configuration values.
+	 * Retrieves an ArrayIterator over the configuration values
 	 *
 	 * @return ArrayIterator An iterator over all config data
 	 */
@@ -32,7 +32,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	}//end getIterator()
 
 	/**
-	 * Checks if the specified config value exists.
+	 * Checks if the specified config value exists
 	 *
 	 * @param SIEnum $key
 	 *
@@ -49,8 +49,10 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	}//end offsetExists()
 
 	/**
-	 * Retrieves a  value.
+	 * Retrieves a  value
 	 *
+	 * @param SIEnum $key
+
 	 * @throws InvalidKey
 	 */
 	public function offsetGet(mixed $key) : mixed
@@ -64,13 +66,14 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	}//end offsetGet()
 
 	/**
-	 * Temporarily overwrites the value of a  variable.
+	 * Temporarily overwrites the value of a  variable
 	 *
-	 * The  change will not persist. It will be lost
-	 * after the request.
+	 * The  change will not persist. It will be lost after the request
 	 *
+	 * @param SIEnum $key
+	 * @param array<string, DataCollection> $value
+
 	 * @throws Exception
-	 * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
 	 */
 	public function offsetSet(mixed $key, mixed $value) : void
 	{
@@ -78,10 +81,11 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	}//end offsetSet()
 
 	/**
-	 * Called when deleting a  value directly, triggers an error.
+	 * Called when deleting a  value directly, triggers an error
 	 *
+	 * @param SIEnum $key
+
 	 * @throws Exception
-	 * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
 	 */
 	public function offsetUnset(mixed $key) : void
 	{
@@ -89,7 +93,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	}//end offsetUnset()
 
 	/**
-	 * Retrieves the number of  options currently set.
+	 * Retrieves the number of  options currently set
 	 *
 	 * @return int Number of config options
 	 */
@@ -175,14 +179,14 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 
 	public function setCheckAvailability(bool $check) : void
 	{
-		$this->check_availability = $check;
+		$this->checkAvailability = $check;
 	}//end setCheckAvailability()
 
 	private function checkData(SIEnum $type, string $date) : bool
 	{
 		if (! isset($this->data[$type][$date]))
 		{
-			if ($this->check_availability)
+			if ($this->checkAvailability)
 			{
 				return false;
 			}
