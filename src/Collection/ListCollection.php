@@ -14,6 +14,7 @@ use Npowest\GardenHelper\Collection\Exception\{InvalidKey, InvalidValue};
 /**
  * @implements ArrayAccess<int, DataCollection>
  * @implements IteratorAggregate<int, DataCollection>
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 {
@@ -174,6 +175,31 @@ final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 
 		$this->data[$cnl]->setFromArray($data);
 	}//end setFromArray()
+
+	public function overlay(self $data) : void
+	{
+		foreach ($this->data as $cnl => $oldData)
+		{
+			if (! isset($data[$cnl]))
+			{
+				continue;
+			}
+
+			$this->data[$cnl]->overlay($data[$cnl]);
+			unset($data[$cnl]);
+		}
+
+		if (! count($data))
+		{
+			return;
+		}
+
+		foreach ($data as $cnl => $newData)
+		{
+			assert($newData instanceof DataCollection);
+			$this->add($newData, $cnl);
+		}
+	}//end overlay()
 
 	/**
 	 * @param array<int, mixed> $data [description]
