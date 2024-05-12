@@ -1,13 +1,8 @@
 {
     "name": "npowest/garden-helper",
     "description": "Emum, Collection, Functions for NPOWEST Garden",
-    "type": "library",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Npowest\\GardenHelper\\": "src/"
-        }
-    },
+    "type": "library",
     "authors": [
         {
             "name": "Virus3D",
@@ -18,18 +13,25 @@
         "php": ">=8.2"
     },
     "require-dev": {
+        "ergebnis/composer-normalize": "^2.42",
         "nunomaduro/phpinsights": "^2.11",
-        "squizlabs/php_codesniffer": "^3.9",
-        "phpstan/phpstan": "^1.10",
         "phpmd/phpmd": "^2.15",
-        "phpstan/phpstan-strict-rules": "^1.5"
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-strict-rules": "^1.5",
+        "squizlabs/php_codesniffer": "^3.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Npowest\\GardenHelper\\": "src/"
+        }
     },
     "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true
+        },
         "platform": {
             "php": "8.2"
-        },
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
