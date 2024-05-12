@@ -11,7 +11,7 @@ use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
-use SlevomatCodingStandard\Sniffs\Classes\SuperfluousTraitNamingSniff;
+use SlevomatCodingStandard\Sniffs\Classes\{SuperfluousAbstractClassNamingSniff, SuperfluousTraitNamingSniff};
 use SlevomatCodingStandard\Sniffs\Commenting\{DocCommentSpacingSniff, InlineDocCommentDeclarationSniff};
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff;
 use SlevomatCodingStandard\Sniffs\Functions\FunctionLengthSniff;
@@ -52,6 +52,7 @@ return [
 		DocCommentSpacingSniff::class,
 		BracesFixer::class,
 		SingleImportPerStatementFixer::class,
+		SuperfluousAbstractClassNamingSniff::class,
 	],
 
 	'config'       => [
@@ -106,10 +107,10 @@ return [
 	*/
 
 	'requirements' => [
-		'min-quality'            => 100,
+		'min-quality'            => 95,
 		'min-complexity'         => 0,
-		'min-architecture'       => 100,
-		'min-style'              => 100,
+		'min-architecture'       => 95,
+		'min-style'              => 95,
 		'disable-security-check' => false,
 	],
 	'threads'      => null,

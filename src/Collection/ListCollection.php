@@ -189,14 +189,14 @@ final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 			unset($data[$cnl]);
 		}
 
-		if (! count($data))
+		if (! \count($data))
 		{
 			return;
 		}
 
 		foreach ($data as $cnl => $newData)
 		{
-			assert($newData instanceof DataCollection);
+			\assert($newData instanceof DataCollection);
 			$this->add($newData, $cnl);
 		}
 	}//end overlay()
