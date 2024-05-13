@@ -186,7 +186,7 @@ final class ListCollection implements ArrayAccess, Countable, IteratorAggregate
 			}
 
 			$this->data[$cnl]->overlay($data[$cnl]);
-			unset($data[$cnl]);
+			$data->delete($cnl);
 		}
 
 		if (! \count($data))

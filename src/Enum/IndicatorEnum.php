@@ -8,8 +8,6 @@ use Npowest\GardenHelper\Trait\EnumTrait;
 
 enum IndicatorEnum : string
 {
-	use EnumTrait;
-
 	case t = 't';
 
 	case p = 'p';
