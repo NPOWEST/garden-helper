@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Collection;
 
@@ -8,6 +8,13 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Npowest\GardenHelper\Collection\Exception\{DeleteException, SetException};
+
+use function count;
+use function is_array;
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * @implements ArrayAccess<string|int, int|float|string|ConfigCollection>
@@ -23,7 +30,7 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	 *
 	 * @return ArrayIterator An iterator over all config data
 	 */
-	public function getIterator() : ArrayIterator
+	public function getIterator(): ArrayIterator
 	{
 		return new ArrayIterator($this->data);
 	}//end getIterator()
@@ -31,9 +38,9 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	/**
 	 * Checks if the specified config value exists.
 	 */
-	public function offsetExists(mixed $key) : bool
+	public function offsetExists(mixed $key): bool
 	{
-		if (! \is_int($key) && ! \is_string($key))
+		if (! is_int($key) && ! is_string($key))
 		{
 			return false;
 		}
@@ -46,51 +53,47 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	 *
 	 * @param int|string $key
 	 *
-	 * @return ConfigCollection|float|int|string
+	 * @return ConfigCollection|float|int|string|null
 	 */
-	public function offsetGet(mixed $key) : mixed
+	public function offsetGet(mixed $key): mixed
 	{
-		return $this->data[$key] ?? '';
+		return $this->data[$key] ?? null;
 	}//end offsetGet()
 
-	/**
-	 * Temporarily overwrites the value of a  variable.
-	 *
-	 * The  change will not persist. It will be lost
-	 * after the request.
-	 *
-	 * @param int|string       $key
-	 * @param float|int|string $value
-	 */
-	public function offsetSet(mixed $key, mixed $value) : void
+	public function offsetSet(mixed $key, mixed $value): void
 	{
-		if (\is_int($value) || \is_float($value) || \is_string($value))
-		{
-			$this->data[$key] = $value;
-		}
+		throw new SetException();
 	}//end offsetSet()
 
 	/**
-	 * Called when deleting a  value directly, triggers an error
+	 * Called when deleting a  value directly, triggers an error.
 	 *
-	 * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+	 * @throws DeleteException
 	 */
-	public function offsetUnset(mixed $key) : void
+	public function offsetUnset(mixed $key): void
 	{
-		trigger_error('Values have to be deleted explicitly with the delete($key) method.', E_USER_ERROR);
+		throw new DeleteException();
 	}//end offsetUnset()
+
+	public function set(int|string $key, mixed $value): void
+	{
+		if (is_int($value) || is_float($value) || is_string($value) || $value instanceof self)
+		{
+			$this->data[$key] = $value;
+		}
+	}//end set()
 
 	/**
 	 * Retrieves the number of  options currently set.
 	 *
 	 * @return int Number of config options
 	 */
-	public function count() : int
+	public function count(): int
 	{
-		return \count($this->data);
+		return count($this->data);
 	}//end count()
 
-	public function empty() : bool
+	public function empty(): bool
 	{
 		return empty($this->data);
 	}//end empty()
@@ -98,7 +101,7 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	/**
 	 * @return array<int|string, array<mixed>|float|int|string>
 	 */
-	public function toArray() : array
+	public function toArray(): array
 	{
 		$data = [];
 		foreach ($this->data as $key => $value)
@@ -119,18 +122,18 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	/**
 	 * @param array<mixed> $data [description]
 	 */
-	public function setFromArray(array $data) : void
+	public function setFromArray(array $data): void
 	{
 		foreach ($data as $key => $value)
 		{
-			if (\is_int($value) || \is_float($value) || \is_string($value))
+			if (is_int($value) || is_float($value) || is_string($value))
 			{
 				$this->data[$key] = $value;
 
 				continue;
 			}
 
-			if (\is_array($value))
+			if (is_array($value))
 			{
 				if (! isset($this->data[$key]) || ! ($this->data[$key] instanceof self))
 				{
@@ -142,11 +145,11 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 		}
 	}//end setFromArray()
 
-	public function setFromString(string $str) : void
+	public function setFromString(string $str): void
 	{
 		/** @var array<mixed>|null */
 		$data = json_decode($str, true);
-		if (! \is_array($data))
+		if (! is_array($data))
 		{
 			return;
 		}
@@ -154,7 +157,7 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 		$this->setFromArray($data);
 	}//end setFromString()
 
-	public function merge(self $data) : void
+	public function merge(self $data): void
 	{
 		$this->setFromArray($data->toArray());
 	}//end merge()

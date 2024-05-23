@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Collection;
 
@@ -9,7 +9,11 @@ use ArrayIterator;
 use Countable;
 use Exception;
 use IteratorAggregate;
+use Npowest\GardenHelper\Collection\Exception\DeleteException;
 use Npowest\GardenHelper\Collection\Exception\InvalidKey;
+use Npowest\GardenHelper\Collection\Exception\SetException;
+use function count;
+use function is_int;
 
 final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggregate
 {
@@ -21,7 +25,7 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	 *
 	 * @return ArrayIterator An iterator over all config data
 	 */
-	public function getIterator() : ArrayIterator
+	public function getIterator(): ArrayIterator
 	{
 		return new ArrayIterator($this->data);
 	}//end getIterator()
@@ -33,9 +37,9 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	 *
 	 * @throws InvalidKey
 	 */
-	public function offsetExists(mixed $key) : bool
+	public function offsetExists(mixed $key): bool
 	{
-		if (! \is_int($key))
+		if (! is_int($key))
 		{
 			throw new InvalidKey('int');
 		}
@@ -48,13 +52,13 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	 *
 	 * @param int $key
 	 *
-	 * @throws InvalidKey
-	 *
 	 * @return ArchiveCollection
+	 *
+	 * @throws InvalidKey
 	 */
-	public function offsetGet(mixed $key) : mixed
+	public function offsetGet(mixed $key): mixed
 	{
-		if (! \is_int($key))
+		if (! is_int($key))
 		{
 			throw new InvalidKey('int');
 		}
@@ -76,13 +80,13 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	 * @param int               $key
 	 * @param ArchiveCollection $value
 	 *
-	 * @throws Exception
+	 * @throws SetException
 	 *
 	 * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
 	 */
-	public function offsetSet(mixed $key, mixed $value) : void
+	public function offsetSet(mixed $key, mixed $value): void
 	{
-		throw new Exception('Values have to be add explicitly with the add($key, $value) method.');
+		throw new SetException();
 	}//end offsetSet()
 
 	/**
@@ -90,13 +94,13 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	 *
 	 * @param int $key
 	 *
-	 * @throws Exception
+	 * @throws DeleteException
 	 *
 	 * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
 	 */
-	public function offsetUnset(mixed $key) : void
+	public function offsetUnset(mixed $key): void
 	{
-		throw new Exception('Values have to be deleted explicitly with the delete($key) method.');
+		throw new DeleteException();
 	}//end offsetUnset()
 
 	/**
@@ -104,17 +108,17 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	 *
 	 * @return int Number of config options
 	 */
-	public function count() : int
+	public function count(): int
 	{
-		return \count($this->data);
+		return count($this->data);
 	}//end count()
 
-	public function empty(int $cnl = 0) : bool
+	public function empty(int $cnl = 0): bool
 	{
 		return ! isset($this->data[$cnl]) || $this->data[$cnl]->empty();
 	}//end empty()
 
-	public function clear() : void
+	public function clear(): void
 	{
 		$this->data = [];
 	}//end clear()

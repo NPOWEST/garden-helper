@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Enum;
 
 use Npowest\GardenHelper\Trait\EnumTrait;
 
-enum ArchiveTypeEnum : string
+enum ArchiveTypeEnum: string
 {
 	use EnumTrait;
 

@@ -1,25 +1,29 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Collection;
 
+use function assert;
+use function is_array;
+use function is_string;
+
 /**
- * archive data class
+ * archive data class.
  */
 final class DataCollection extends AbstractCollection
 {
-	/** @var array<string, array<array<string, int>|int>> */
+	/** @var array<string, array<array<string, int|string>|int>> */
 	protected array $error = [];
 
 	/**
 	 * @param array<mixed> $data
 	 */
-	public function setErrorFromArray(array $data) : void
+	public function setErrorFromArray(array $data): void
 	{
 		foreach ($data as $key => $values)
 		{
-			if (! \is_string($key) || ! \is_array($values))
+			if (! is_string($key) || ! is_array($values))
 			{
 				continue;
 			}
@@ -30,7 +34,7 @@ final class DataCollection extends AbstractCollection
 
 			foreach ($values as $value)
 			{
-				\assert(\is_string($value));
+				assert(is_string($value));
 				$value  = explode('__', $value);
 				$lvl    = (int) ($value[1] ?? 0);
 				$maxLvl = max($maxLvl, $lvl);
@@ -45,20 +49,20 @@ final class DataCollection extends AbstractCollection
 		}//end foreach
 	}//end setErrorFromArray()
 
-	public function setErrorFromString(string $str) : void
+	public function setErrorFromString(string $str): void
 	{
 		/** @var array<mixed>|false */
 		$error = json_decode($str, true);
-		if ($error === false || ! isset($error['error']))
+		if (false === $error || ! isset($error['error']))
 		{
 			return;
 		}
 
-		\assert(\is_array($error['error']));
+		assert(is_array($error['error']));
 		$this->setErrorFromArray($error['error']);
 	}//end setErrorFromString()
 
-	public function getMaxLvl(string $key) : int
+	public function getMaxLvl(string $key): int
 	{
 		/** @var int */
 		return $this->error[$key]['maxLvl'] ?? 0;
@@ -67,13 +71,14 @@ final class DataCollection extends AbstractCollection
 	/**
 	 * @return list<string>
 	 */
-	public function getErrorTitle(string $key) : array
+	public function getErrorTitle(string $key): array
 	{
 		if (! isset($this->error[$key]))
 		{
 			return [];
 		}
 
+		/** @var list<string> */
 		return array_keys($this->error[$key]['msg']);
 	}//end getErrorTitle()
 }//end class

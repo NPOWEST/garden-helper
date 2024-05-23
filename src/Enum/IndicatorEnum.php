@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Npowest\GardenHelper\Enum;
 
-use Npowest\GardenHelper\Trait\EnumTrait;
-
 enum IndicatorEnum : string
 {
 	case t = 't';

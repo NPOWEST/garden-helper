@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Collection;
 
@@ -8,6 +8,12 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Npowest\GardenHelper\Collection\Exception\DeleteException;
+
+use function count;
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * @implements ArrayAccess<string, int|float|string>
@@ -21,27 +27,27 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	/**
 	 * @param array<mixed> $data
 	 */
-	final public function setFromArray(array $data) : void
+	final public function setFromArray(array $data): void
 	{
 		foreach ($data as $key => $value)
 		{
-			if (! \is_string($key))
+			if (! is_string($key))
 			{
 				continue;
 			}
 
-			if (\is_int($value) || \is_float($value) || \is_string($value))
+			if (is_int($value) || is_float($value) || is_string($value))
 			{
 				$this->data[$key] = $value;
 			}
 		}
 	}//end setFromArray()
 
-	final public function setFromString(string $str) : void
+	final public function setFromString(string $str): void
 	{
 		/** @var array<mixed>|false $data */
 		$data = json_decode($str, true);
-		if ($data === false)
+		if (false === $data)
 		{
 			return;
 		}
@@ -54,7 +60,7 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	 *
 	 * @return ArrayIterator An iterator over all data
 	 */
-	final public function getIterator() : ArrayIterator
+	final public function getIterator(): ArrayIterator
 	{
 		return new ArrayIterator($this->data);
 	}//end getIterator()
@@ -66,7 +72,7 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	 *
 	 * @return bool whether the  option exists
 	 */
-	final public function offsetExists(mixed $key) : bool
+	final public function offsetExists(mixed $key): bool
 	{
 		return isset($this->data[$key]);
 	}//end offsetExists()
@@ -78,7 +84,7 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	 *
 	 * @return float|int|string The  value
 	 */
-	final public function offsetGet(mixed $key) : mixed
+	final public function offsetGet(mixed $key): mixed
 	{
 		return $this->data[$key] ?? '';
 	}//end offsetGet()
@@ -89,10 +95,10 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	 * The  change will not persist. It will be lost
 	 * after the request.
 	 *
-	 * @param string|null      $key   the  option's name
+	 * @param string           $key   the  option's name
 	 * @param float|int|string $value the temporary value
 	 */
-	final public function offsetSet(mixed $key, mixed $value) : void
+	final public function offsetSet(mixed $key, mixed $value): void
 	{
 		$this->set($key, $value);
 	}//end offsetSet()
@@ -102,11 +108,11 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	 *
 	 * @param string $key the  option's name
 	 *
-	 * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+	 * @throws DeleteException
 	 */
-	final public function offsetUnset(mixed $key) : void
+	final public function offsetUnset(mixed $key): void
 	{
-		trigger_error('Config values have to be deleted explicitly with the \phpbb\config\config::delete($key) method.', E_USER_ERROR);
+		throw new DeleteException();
 	}//end offsetUnset()
 
 	/**
@@ -114,48 +120,48 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	 *
 	 * @return int Number of config options
 	 */
-	final public function count() : int
+	final public function count(): int
 	{
-		return \count($this->data);
+		return count($this->data);
 	}//end count()
 
 	/**
 	 * @return array<string, float|int|string>
 	 */
-	final public function toArray() : array
+	final public function toArray(): array
 	{
 		return $this->data;
 	}//end toArray()
 
 	/**
-	 * Removes a  option
+	 * Removes a  option.
 	 *
 	 * @param string $key The  option's name
 	 */
-	final public function delete(string $key) : void
+	final public function delete(string $key): void
 	{
 		unset($this->data[$key]);
 	}//end delete()
 
-	final public function set(string $key, mixed $value) : void
+	final public function set(string $key, mixed $value): void
 	{
-		if (\is_int($value) || \is_float($value) || \is_string($value))
+		if (is_int($value) || is_float($value) || is_string($value))
 		{
 			$this->data[$key] = $value;
 		}
 	}//end set()
 
-	final public function empty() : bool
+	final public function empty(): bool
 	{
 		return empty($this->data);
 	}//end empty()
 
-	final public function merge(self $data) : void
+	final public function merge(self $data): void
 	{
 		$this->setFromArray($data->toArray());
 	}//end merge()
 
-	final public function overlay(self $data) : void
+	final public function overlay(self $data): void
 	{
 		$this->overlayArray($data->toArray());
 	}//end overlay()
@@ -163,7 +169,7 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 	/**
 	 * @param array<mixed> $data [description]
 	 */
-	final public function overlayArray(array $data) : void
+	final public function overlayArray(array $data): void
 	{
 		$tmp = $this->data;
 		$this->setFromArray($data);

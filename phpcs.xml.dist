@@ -86,7 +86,7 @@
     <!-- <rule ref="Generic.Commenting.DocComment"></rule> -->
     <rule ref="Generic.Commenting.Fixme"></rule>
     <rule ref="Generic.Commenting.Todo"></rule>
-    <rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+    <!-- <rule ref="Generic.ControlStructures.DisallowYodaConditions"/> -->
     <!-- Проверяет, что встроенные управляющие инструкции отсутствуют. -->
     <rule ref="Generic.ControlStructures.InlineControlStructure">
         <properties>

@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper;
 
 final class Functions
 {
-	public static function between(float|int $value, float|int $lower, float|int $upper) : bool
+	public static function between(float|int $value, float|int $lower, float|int $upper): bool
 	{
 		if ($lower > $upper)
 		{
