@@ -7,11 +7,9 @@ namespace Npowest\GardenHelper\Collection;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
-use Exception;
 use IteratorAggregate;
-use Npowest\GardenHelper\Collection\Exception\DeleteException;
-use Npowest\GardenHelper\Collection\Exception\InvalidKey;
-use Npowest\GardenHelper\Collection\Exception\SetException;
+use Npowest\GardenHelper\Collection\Exception\{DeleteException, InvalidKey, SetException};
+
 use function count;
 use function is_int;
 

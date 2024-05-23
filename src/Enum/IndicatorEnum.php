@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Enum;
 
-enum IndicatorEnum : string
+enum IndicatorEnum: string
 {
 	case t = 't';
 

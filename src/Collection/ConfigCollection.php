@@ -60,6 +60,10 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 		return $this->data[$key] ?? null;
 	}//end offsetGet()
 
+	/**
+	 * @param int|string       $key
+	 * @param float|int|string $value
+	 */
 	public function offsetSet(mixed $key, mixed $value): void
 	{
 		throw new SetException();

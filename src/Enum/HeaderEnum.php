@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Enum;
 
-enum HeaderEnum : int
+enum HeaderEnum: int
 {
 	case p = 0;
 
