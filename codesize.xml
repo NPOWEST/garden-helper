@@ -90,6 +90,6 @@
     </rule>
     <rule ref="rulesets/unusedcode.xml/UnusedPrivateMethod" />
 
-    <exclude-pattern>/var/*</exclude-pattern>
-    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>var/*</exclude-pattern>
+    <exclude-pattern>vendor/*</exclude-pattern>
 </ruleset>
