@@ -25,6 +25,18 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	/** @var array<int|string, ConfigCollection|float|int|string> */
 	private array $data = [];
 
+	public function __clone()
+	{
+		foreach ($this->data as $key => $value)
+		{
+			if ($value instanceof self)
+			{
+				$this->data[$key] = clone $value;
+			}
+
+		}
+	}//end __clone()
+
 	/**
 	 * Retrieves an ArrayIterator over the configuration values.
 	 *
@@ -63,6 +75,8 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	/**
 	 * @param int|string       $key
 	 * @param float|int|string $value
+	 *
+	 * @throws SetException
 	 */
 	public function offsetSet(mixed $key, mixed $value): void
 	{

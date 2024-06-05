@@ -15,7 +15,7 @@ use Npowest\GardenHelper\Enum\SIEnum;
  * @implements ArrayAccess<SIEnum, ListCollection>
  * @implements IteratorAggregate<SIEnum, ListCollection>
  */
-final class ListArhiveCollection implements ArrayAccess, IteratorAggregate
+final class ListArchiveCollection implements ArrayAccess, IteratorAggregate
 {
 	/** @var array<string, ListCollection> */
 	private array $data;
