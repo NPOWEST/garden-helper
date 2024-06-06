@@ -33,7 +33,6 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 			{
 				$this->data[$key] = clone $value;
 			}
-
 		}
 	}//end __clone()
 
