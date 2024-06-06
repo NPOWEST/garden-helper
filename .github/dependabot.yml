@@ -5,7 +5,8 @@
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "composer" # See documentation for possible values
+      - "/composer/helpers/v1"
+      - "/composer/helpers/v2"
     schedule:
       interval: "weekly"
