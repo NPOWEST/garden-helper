@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @see https://npowest.ru
+ * @license Shareware
+ * @copyright (c) 2019-2024 NPOWest
+ */
+
 declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Collection;
@@ -14,12 +20,16 @@ use Npowest\GardenHelper\Enum\SIEnum;
 use function array_slice;
 use function count;
 
-final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggregate
+/**
+ * @implements ArrayAccess<SIEnum, array<string, DataCollection>>
+ * @implements IteratorAggregate<SIEnum, array<string, DataCollection>>
+ */
+final class ArchiveCollection implements ArrayAccess, IteratorAggregate
 {
 	private bool $checkAvailability = true;
 
-	/** @var array<SIEnum, array<string, DataCollection>> [type : [date : DataCollection]] */
-	private array $data = [SIEnum::s => [], SIEnum::i => []];
+	/** @var array<string, array<string, DataCollection>> [type : [date : DataCollection]] */
+	private array $data = [SIEnum::s->value => [], SIEnum::i->value => []];
 
 	private ?DataCollection $total = null;
 
@@ -47,7 +57,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 			throw new InvalidKey('SIEnum');
 		}
 
-		return isset($this->data[$key]);
+		return isset($this->data[$key->value]);
 	}//end offsetExists()
 
 	/**
@@ -64,7 +74,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 			throw new InvalidKey('SIEnum');
 		}
 
-		return $this->data[$key];
+		return $this->data[$key->value];
 	}//end offsetGet()
 
 	/**
@@ -94,45 +104,36 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 		throw new DeleteException();
 	}//end offsetUnset()
 
-	/**
-	 * Retrieves the number of  options currently set.
-	 *
-	 * @return int Number of config options
-	 */
-	public function count(): int
-	{
-		return count($this->data);
-	}//end count()
-
 	public function init(string $date): void
 	{
-		$this->data[SIEnum::s][$date] = new DataCollection();
-		$this->data[SIEnum::i][$date] = new DataCollection();
+		$this->data[SIEnum::s->value][$date] = new DataCollection();
+		$this->data[SIEnum::i->value][$date] = new DataCollection();
 	}//end init()
 
 	public function initSi(string $date): void
 	{
-		$this->data[SIEnum::si]        = [];
-		$this->data[SIEnum::si][$date] = $this->data[SIEnum::s][$date];
+		$this->data[SIEnum::si->value]        = [];
+
+		$this->data[SIEnum::si->value][$date] = $this->data[SIEnum::s->value][$date];
 	}//end initSi()
 
 	public function addSi(string $date): void
 	{
-		$this->data[SIEnum::si][$date] = $this->data[SIEnum::s][$date];
+		$this->data[SIEnum::si->value][$date] = $this->data[SIEnum::s->value][$date];
 	}//end addSi()
 
 	public function getFirstKey(SIEnum $type): ?string
 	{
-		reset($this->data[$type]);
+		reset($this->data[$type->value]);
 
-		return key($this->data[$type]);
+		return key($this->data[$type->value]);
 	}//end getFirstKey()
 
 	public function getLastKey(SIEnum $type): ?string
 	{
-		end($this->data[$type]);
+		end($this->data[$type->value]);
 
-		return key($this->data[$type]);
+		return key($this->data[$type->value]);
 	}//end getLastKey()
 
 	public function trim(string $date1, string $date1i, string $date2): void
@@ -145,9 +146,9 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 	{
 		$first = 0;
 		$i     = 0;
-		$count = count($this->data[$key]);
+		$count = count($this->data[$key->value]);
 		$last  = $count;
-		foreach ($this->data[$key] as $date => $val)
+		foreach ($this->data[$key->value] as $date => $val)
 		{
 			if (! $val->empty() && $date > $date1)
 			{
@@ -159,24 +160,24 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 		}
 		if ($i === $count)
 		{
-			$this->data[$key] = [];
+			$this->data[$key->value] = [];
 
 			return;
 		}
 
-		end($this->data[$key]);
+		end($this->data[$key->value]);
 		for ($i = $count; $i > 0; --$i)
 		{
-			if (! current($this->data[$key])->empty() && key($this->data[$key]) < $date2)
+			if (! current($this->data[$key->value])->empty() && key($this->data[$key->value]) < $date2)
 			{
 				$last = $i;
 
 				break;
 			}
-			prev($this->data[$key]);
+			prev($this->data[$key->value]);
 		}
 
-		$this->data[$key] = array_slice($this->data[$key], $first, $last - $first);
+		$this->data[$key->value] = array_slice($this->data[$key->value], $first, $last - $first);
 	}//end trimAct()
 
 	public function setCheckAvailability(bool $check): void
@@ -186,13 +187,13 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 
 	private function checkData(SIEnum $type, string $date): bool
 	{
-		if (! isset($this->data[$type][$date]))
+		if (! isset($this->data[$type->value][$date]))
 		{
 			if ($this->checkAvailability)
 			{
 				return false;
 			}
-			$this->data[$type][$date] = new DataCollection();
+			$this->data[$type->value][$date] = new DataCollection();
 		}
 
 		return true;
@@ -204,7 +205,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 		{
 			return;
 		}
-		$this->data[$type][$date]->set($key, $value);
+		$this->data[$type->value][$date]->set($key, $value);
 	}//end set()
 
 	public function setFromString(SIEnum $type, string $date, string $value): void
@@ -213,7 +214,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 		{
 			return;
 		}
-		$this->data[$type][$date]->setFromString($value);
+		$this->data[$type->value][$date]->setFromString($value);
 	}//end setFromString()
 
 	public function setErrorFromString(SIEnum $type, string $date, string $value): void
@@ -222,7 +223,7 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 		{
 			return;
 		}
-		$this->data[$type][$date]->setErrorFromString($value);
+		$this->data[$type->value][$date]->setErrorFromString($value);
 	}//end setErrorFromString()
 
 	/**
@@ -234,13 +235,13 @@ final class ArchiveCollection implements ArrayAccess, Countable, IteratorAggrega
 		{
 			return;
 		}
-		$this->data[$type][$date]->setFromArray($value);
+		$this->data[$type->value][$date]->setFromArray($value);
 	}//end setFromArray()
 
 	public function sort(): void
 	{
-		ksort($this->data[SIEnum::i]);
-		ksort($this->data[SIEnum::s]);
+		ksort($this->data[SIEnum::i->value]);
+		ksort($this->data[SIEnum::s->value]);
 	}//end sort()
 
 	public function hasTotal(): bool

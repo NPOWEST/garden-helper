@@ -29,9 +29,7 @@ final class ListArchiveCollection implements ArrayAccess, IteratorAggregate
 	}//end __construct()
 
 	/**
-	 * Retrieves an ArrayIterator over the configuration values.
-	 *
-	 * @return ArrayIterator An iterator over all config data
+	 * @return ArrayIterator<string, ListCollection>
 	 */
 	public function getIterator(): ArrayIterator
 	{
@@ -39,8 +37,6 @@ final class ListArchiveCollection implements ArrayAccess, IteratorAggregate
 	}//end getIterator()
 
 	/**
-	 * Checks if the specified config value exists.
-	 *
 	 * @param SIEnum $key
 	 *
 	 * @throws InvalidKey
@@ -56,7 +52,7 @@ final class ListArchiveCollection implements ArrayAccess, IteratorAggregate
 	}//end offsetExists()
 
 	/**
-	 * Retrieves a  value.
+	 * @return ListCollection
 	 *
 	 * @throws InvalidKey
 	 */
@@ -67,15 +63,10 @@ final class ListArchiveCollection implements ArrayAccess, IteratorAggregate
 			throw new InvalidKey('SIEnum');
 		}
 
-		return $this->data[$key->value] ?? null;
+		return $this->data[$key->value];
 	}//end offsetGet()
 
 	/**
-	 * Temporarily overwrites the value of a  variable.
-	 *
-	 * The  change will not persist. It will be lost
-	 * after the request.
-	 *
 	 * @throws Exception
 	 */
 	public function offsetSet(mixed $key, mixed $value): void
@@ -84,12 +75,15 @@ final class ListArchiveCollection implements ArrayAccess, IteratorAggregate
 	}//end offsetSet()
 
 	/**
-	 * Called when deleting a  value directly, triggers an error.
-	 *
 	 * @throws Exception
 	 */
 	public function offsetUnset(mixed $key): void
 	{
 		throw new Exception('Not UnSet');
 	}//end offsetUnset()
+
+	public function set(SIEnum $type, ListCollection $list): void
+	{
+		$this->data[$type->value] = $list;
+	}//end set()
 }//end class

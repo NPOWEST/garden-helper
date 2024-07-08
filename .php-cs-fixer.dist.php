@@ -12,6 +12,8 @@ return (new PhpCsFixer\Config())
         '@Symfony:risky' => true,
         '@DoctrineAnnotation' => true,
 
+        'header_comment' => ['header' => "@see https://npowest.ru\n@license Shareware\n@copyright (c) 2019-2024 NPOWest", 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'both'],
+
         /** Alias */
 
         // Replace non multibyte-safe functions with corresponding mb function. (risky)
