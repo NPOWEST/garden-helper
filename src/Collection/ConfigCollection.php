@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @see https://npowest.ru
+ * @license Shareware
+ * @copyright (c) 2019-2024 NPOWest
+ */
+
 declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Collection;
@@ -9,7 +15,9 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Npowest\GardenHelper\Collection\Exception\{DeleteException, SetException};
+use Npowest\GardenHelper\Enum\IndicatorEnum;
 
+use function assert;
 use function count;
 use function is_array;
 use function is_float;
@@ -17,12 +25,12 @@ use function is_int;
 use function is_string;
 
 /**
- * @implements ArrayAccess<string|int, int|float|string|ConfigCollection>
- * @implements IteratorAggregate<string|int, int|float|string|ConfigCollection>
+ * @implements ArrayAccess<int|string, ConfigCollection|float|IndicatorCollection|int|string>
+ * @implements IteratorAggregate<int|string, ConfigCollection|float|IndicatorCollection|int|string>
  */
 final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregate
 {
-	/** @var array<int|string, ConfigCollection|float|int|string> */
+	/** @var array<int|string, ConfigCollection|float|IndicatorCollection|int|string> */
 	private array $data = [];
 
 	public function __clone()
@@ -51,11 +59,6 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	 */
 	public function offsetExists(mixed $key): bool
 	{
-		if (! is_int($key) && ! is_string($key))
-		{
-			return false;
-		}
-
 		return isset($this->data[$key]);
 	}//end offsetExists()
 
@@ -64,7 +67,7 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 	 *
 	 * @param int|string $key
 	 *
-	 * @return ConfigCollection|float|int|string|null
+	 * @return ConfigCollection|float|IndicatorCollection|int|string|null
 	 */
 	public function offsetGet(mixed $key): mixed
 	{
@@ -92,13 +95,21 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 		throw new DeleteException();
 	}//end offsetUnset()
 
-	public function set(int|string $key, mixed $value): void
+	public function set(int|string $key, float|int|self|string $value): void
 	{
-		if (is_int($value) || is_float($value) || is_string($value) || $value instanceof self)
-		{
-			$this->data[$key] = $value;
-		}
+		$this->data[$key] = $value;
 	}//end set()
+
+	public function setIndicator(IndicatorEnum $type, int $cnl, int $value): void
+	{
+		if (! isset($this->data['indicator']))
+		{
+			$this->data['indicator'] = new IndicatorCollection();
+		}
+
+		assert($this->data['indicator'] instanceof IndicatorCollection);
+		$this->data['indicator']->set($type, $cnl, $value);
+	}//end setIndicator()
 
 	/**
 	 * Retrieves the number of  options currently set.
@@ -123,7 +134,7 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 		$data = [];
 		foreach ($this->data as $key => $value)
 		{
-			if ($value instanceof self)
+			if ($value instanceof self || $value instanceof IndicatorCollection)
 			{
 				$data[$key] = $value->toArray();
 
@@ -145,13 +156,20 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 		{
 			if (is_int($value) || is_float($value) || is_string($value))
 			{
-				$this->data[$key] = $value;
+				$this->set($key, $value);
 
 				continue;
 			}
 
 			if (is_array($value))
 			{
+				if ('indicator' == $key)
+				{
+					$this->data[$key] = new IndicatorCollection();
+					$this->data[$key]->setFromArray($value);
+
+					continue;
+				}
 				if (! isset($this->data[$key]) || ! ($this->data[$key] instanceof self))
 				{
 					$this->data[$key] = new self();
@@ -159,7 +177,7 @@ final class ConfigCollection implements ArrayAccess, Countable, IteratorAggregat
 
 				$this->data[$key]->setFromArray($value);
 			}
-		}
+		}//end foreach
 	}//end setFromArray()
 
 	public function setFromString(string $str): void

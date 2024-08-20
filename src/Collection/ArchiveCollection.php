@@ -12,7 +12,6 @@ namespace Npowest\GardenHelper\Collection;
 
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
 use IteratorAggregate;
 use Npowest\GardenHelper\Collection\Exception\{DeleteException, InvalidKey, SetException};
 use Npowest\GardenHelper\Enum\SIEnum;
@@ -112,7 +111,7 @@ final class ArchiveCollection implements ArrayAccess, IteratorAggregate
 
 	public function initSi(string $date): void
 	{
-		$this->data[SIEnum::si->value]        = [];
+		$this->data[SIEnum::si->value] = [];
 
 		$this->data[SIEnum::si->value][$date] = $this->data[SIEnum::s->value][$date];
 	}//end initSi()

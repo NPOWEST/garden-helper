@@ -12,13 +12,9 @@ namespace Npowest\GardenHelper\Collection;
 
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
 use IteratorAggregate;
 use Npowest\GardenHelper\Collection\Exception\{DeleteException, InvalidKey, SetException};
 use Npowest\GardenHelper\Enum\IndicatorEnum;
-
-use function array_slice;
-use function count;
 
 /**
  * @implements ArrayAccess<IndicatorEnum, array<int, int>>
@@ -26,8 +22,6 @@ use function count;
  */
 final class IndicatorCollection implements ArrayAccess, IteratorAggregate
 {
-	private bool $checkAvailability = true;
-
 	/** @var array<string, array<int, int>> */
 	private array $data = [
 		IndicatorEnum::t->value => [0],
@@ -35,9 +29,7 @@ final class IndicatorCollection implements ArrayAccess, IteratorAggregate
 		IndicatorEnum::v->value => [0],
 		IndicatorEnum::m->value => [0],
 		IndicatorEnum::g->value => [0],
-
-		];
-
+	];
 
 	/**
 	 * Retrieves an ArrayIterator over the configuration values.
@@ -88,7 +80,7 @@ final class IndicatorCollection implements ArrayAccess, IteratorAggregate
 	 *
 	 * The  change will not persist. It will be lost after the request
 	 *
-	 * @param IndicatorEnum                        $key
+	 * @param IndicatorEnum   $key
 	 * @param array<int, int> $value
 	 *
 	 * @throws SetException
@@ -110,12 +102,23 @@ final class IndicatorCollection implements ArrayAccess, IteratorAggregate
 		throw new DeleteException();
 	}//end offsetUnset()
 
+	/**
+	 * @return array<string, array<int, int>>
+	 */
+	public function toArray(): array
+	{
+		return $this->data;
+	}//end toArray()
 
 	public function set(IndicatorEnum $type, int $cnl, int $value): void
 	{
 		$this->data[$type->value][$cnl] = $value;
 	}//end set()
 
+	public function get(IndicatorEnum $type, int $cnl): int
+	{
+		return $this->data[$type->value][$cnl] ?? 0;
+	}//end get()
 
 	/**
 	 * @param array<string, array<int, int>> $array
@@ -131,5 +134,4 @@ final class IndicatorCollection implements ArrayAccess, IteratorAggregate
 			}
 		}
 	}//end setFromArray()
-
 }//end class

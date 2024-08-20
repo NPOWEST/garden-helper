@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @see https://npowest.ru
+ * @license Shareware
+ * @copyright (c) 2019-2024 NPOWest
+ */
+
 declare(strict_types=1);
 
 namespace Npowest\GardenHelper\Collection;
@@ -100,6 +106,16 @@ final class ArchivesCollection implements ArrayAccess, Countable, IteratorAggreg
 	{
 		throw new DeleteException();
 	}//end offsetUnset()
+
+	public function init(int $cnl, string $date): void
+	{
+		if (! isset($this->data[$cnl]))
+		{
+			$this->data[$cnl] = new ArchiveCollection();
+		}
+
+		$this->data[$cnl]->init($date);
+	}//end init()
 
 	/**
 	 * Retrieves the number of  options currently set.
