@@ -1,3 +1,4 @@
 /.phpintel
 /vendor
 /.php-cs-fixer.cache
+/tmp

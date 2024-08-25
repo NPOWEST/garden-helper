@@ -56,6 +56,16 @@ final class Mask
 		return $this->mask[$type->value] === mb_strtoupper($type->name);
 	}//end isRead()
 
+	public function read(MaskEnum $type): void
+	{
+		$this->mask[$type->value] = mb_strtoupper($type->name);
+	}//end read()
+
+	public function set(MaskEnum $type): void
+	{
+		$this->mask[$type->value] = $type->name;
+	}//end set()
+
 	public function del(MaskEnum $type): void
 	{
 		if (MaskEnum::n === $type)
