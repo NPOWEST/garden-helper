@@ -4,6 +4,9 @@
 
 $finder = (new PhpCsFixer\Finder())
     ->in('./')
+    ->notPath([
+        'phpinsights.php',
+    ])
 ;
 
 return (new PhpCsFixer\Config())
