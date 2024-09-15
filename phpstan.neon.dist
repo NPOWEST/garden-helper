@@ -4,4 +4,3 @@ parameters:
         - src
     parallel:
         maximumNumberOfProcesses: 4
-    checkGenericClassInNonGenericObjectType: false

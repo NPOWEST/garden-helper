@@ -36,6 +36,7 @@ final class ArchiveCollection implements ArrayAccess, IteratorAggregate
 	 * Retrieves an ArrayIterator over the configuration values.
 	 *
 	 * @return ArrayIterator An iterator over all config data
+	 * @phpstan-ignore missingType.generics
 	 */
 	public function getIterator(): ArrayIterator
 	{
@@ -167,6 +168,7 @@ final class ArchiveCollection implements ArrayAccess, IteratorAggregate
 		end($this->data[$key->value]);
 		for ($i = $count; $i > 0; --$i)
 		{
+			// @phpstan-ignore method.nonObject
 			if (! current($this->data[$key->value])->empty() && key($this->data[$key->value]) < $date2)
 			{
 				$last = $i;
@@ -206,6 +208,15 @@ final class ArchiveCollection implements ArrayAccess, IteratorAggregate
 		}
 		$this->data[$type->value][$date]->set($key, $value);
 	}//end set()
+
+	public function overlay(SIEnum $type, string $date, DataCollection $data): void
+	{
+		if (! $this->checkData($type, $date))
+		{
+			return;
+		}
+		$this->data[$type->value][$date]->overlay($data);
+	}//end overlay()
 
 	public function setFromString(SIEnum $type, string $date, string $value): void
 	{

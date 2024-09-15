@@ -42,10 +42,7 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 				continue;
 			}
 
-			if (is_int($value) || is_float($value) || is_string($value))
-			{
-				$this->data[$key] = $value;
-			}
+			$this->set($key, $value);
 		}
 	}//end setFromArray()
 
@@ -164,21 +161,29 @@ abstract class AbstractCollection implements ArrayAccess, Countable, IteratorAgg
 
 	final public function merge(self $data): void
 	{
-		$this->setFromArray($data->toArray());
+		foreach ($data as $key => $value)
+		{
+			$this->set($key, $value);
+		}
 	}//end merge()
 
 	final public function overlay(self $data): void
 	{
-		$this->overlayArray($data->toArray());
+		foreach ($data as $key => $value)
+		{
+			if (! isset($this->data[$key]))
+			{
+				$this->set($key, $value);
+			}
+		}
 	}//end overlay()
 
 	/**
-	 * @param array<mixed> $data [description]
+	 * @param array<mixed> $data
 	 */
 	final public function overlayArray(array $data): void
 	{
-		$tmp = $this->data;
+		$data = array_diff($data, $this->data);
 		$this->setFromArray($data);
-		$this->setFromArray($tmp);
 	}//end overlayArray()
 }//end class
