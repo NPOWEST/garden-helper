@@ -37,15 +37,16 @@ jobs:
       - name: PHP Code Sniffer
         run: |
           vendor/bin/phpcs --standard=.linter/phpcs.xml.dist src
+  
+      - name: PHPStan
+        run: |
+          vendor/bin/phpstan analyse --ansi --configuration .linter/phpstan.dist.neon -- src
+
+      - name: PHP Insights
+        run: |
+          vendor/bin/phpinsights analyse --ansi --config-path=.linter/phpinsights.php --format=github-action -- src
 
       - name: PHP Mess Detector
         run: |
           vendor/bin/phpmd src github .linter/phpmd.ruleset.xml --color
   
-      - name: PHPStan
-        run: |
-          vendor/bin/phpstan analyse --ansi --configuration .linter/phpstan.dist.neon -- src || exit 1
-
-      - name: PHP Insights
-        run: |
-          vendor/bin/phpinsights analyse --ansi --config-path=.linter/phpinsights.php --format=github-action -- src
