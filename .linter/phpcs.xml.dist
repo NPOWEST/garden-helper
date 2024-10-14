@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="Custom Standard">
 
-    <arg name="tab-width" value="4"/>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
     <arg name="basepath" value="."/>
+    <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors"/>
+    <arg name="extensions" value="php"/>
     <arg name="parallel" value="75"/>
     <arg value="np"/>
-
-    <file>src</file>
 
     <!-- Don't hide tokenizer exceptions -->
     <rule ref="Internal.Tokenizer.Exception">
@@ -302,7 +303,7 @@
         </properties>
     </rule>
     <!-- Выдает ошибки, если для отступа используются пробелы, отличные от точного отступа. -->
-    <rule ref="Generic.WhiteSpace.DisallowSpaceIndent"></rule>
+    <!-- <rule ref="Generic.WhiteSpace.DisallowSpaceIndent"></rule> -->
     <!-- Проверяет интервал между переменными и операторами увеличения/уменьшения. -->
     <rule ref="Generic.WhiteSpace.IncrementDecrementSpacing"/>
     <!-- Гарантирует, что все языковые конструкции содержат единый пробел между собой и своим содержимым. -->
@@ -349,13 +350,18 @@
         Гарантирует, что вызовы функций отформатированы правильно.
         Функции должны вызываться без пробелов между именем функции, открывающей круглой скобкой и первым параметром; и без пробелов между последним параметром, закрывающей круглой скобкой и точкой с запятой.
      -->
-    <rule ref="PEAR.Functions.FunctionCallSignature"></rule>
+    <rule ref="PEAR.Functions.FunctionCallSignature">
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterCloseBracket" />
+    </rule>
     <!--
         После ключевого слова function должно быть ровно 1 пробел и по 1 пробелу с каждой стороны ключевого слова use.
         Замыкания должны использовать стиль фигурных скобок Кернигана/Ричи, а другие однострочные функции должны использовать стиль BSD/Allman.
         Многострочные объявления функций должны содержать списки параметров с отступом на один уровень с закрывающей круглой скобкой в новой строке, за которой следует один пробел и открывающая фигурная скобка функции.
      -->
-    <rule ref="PEAR.Functions.FunctionDeclaration"></rule>
+    <rule ref="PEAR.Functions.FunctionDeclaration">
+        <exclude name="PEAR.Functions.FunctionDeclaration.BraceOnNewLine" />
+        <exclude name="PEAR.Functions.FunctionDeclaration.BraceOnSameLine" />
+    </rule>
     <!-- Гарантирует, что параметры функции со значениями по умолчанию находятся в конце объявления. -->
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
     <!--
@@ -494,7 +500,8 @@
     </rule>
     <!--
         Проверяет, что свойства объявлены правильно.
-        Имена свойств не должны иметь префикса подчеркивания для указания видимости. Для объявления свойств следует использовать Visibility, а не ключевое слово var. В инструкции должно быть объявлено только одно свойство. Статическое объявление должно следовать за объявлением видимости.
+        Имена свойств не должны иметь префикса подчеркивания для указания видимости. Для объявления свойств следует использовать Visibility, а не ключевое слово var.
+        В инструкции должно быть объявлено только одно свойство. Статическое объявление должно следовать за объявлением видимости.
      -->
     <rule ref="PSR2.Classes.PropertyDeclaration"/>
     <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
@@ -505,6 +512,11 @@
         Управляющие структуры должны содержать 0 пробелов после открывающих круглых скобок и 0 пробелов перед закрывающими круглыми скобками.
      -->
     <rule ref="PSR2.ControlStructures.ControlStructureSpacing"/>
+    <!--
+        Одним из правил, которые соблюдает этот сдвиг, является отступ каждого условия в структуре элемента управления, когда условия разделены на несколько строк.
+        По умолчанию этот параметр определяет, что условия имеют отступ в 4 пробела, но вы можете изменить размер отступа, установив свойство indent.
+     -->
+    <rule ref="PSR12.ControlStructures.ControlStructureSpacing"/>
     <!--
         Проверяет, что нет операторов else if (вместо них следует использовать elseif).
         Ключевое слово elseif в PHP следует использовать вместо else if.
@@ -524,12 +536,15 @@
     <!-- Гарантирует, что файл заканчивается символом новой строки. -->
     <rule ref="PSR2.Files.EndFileNewline"/>
     <!-- Проверяет правильность формата вызова функции. -->
-    <rule ref="PSR2.Methods.FunctionCallSignature"></rule>
+    <rule ref="PSR2.Methods.FunctionCallSignature">
+        <exclude name="PSR2.Methods.FunctionCallSignature.SpaceAfterCloseBracket" />
+    </rule>
     <!-- Проверяет, что закрывающая фигурная скобка функции следует непосредственно за телом. -->
     <rule ref="PSR2.Methods.FunctionClosingBrace"></rule>
     <!--
         Проверяет правильность объявления метода.
-        Имена методов не должны иметь префикса с подчеркиванием, чтобы указать на видимость. Ключевое слово static, если оно присутствует, должно быть указано после объявления видимости, а ключевые слова final и abstract должны быть указаны до этого.
+        Имена методов не должны иметь префикса с подчеркиванием, чтобы указать на видимость.
+        Ключевое слово static, если оно присутствует, должно быть указано после объявления видимости, а ключевые слова final и abstract должны быть указаны до этого.
      -->
     <rule ref="PSR2.Methods.MethodDeclaration"/>
     <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
@@ -639,7 +654,9 @@
         </properties>
     </rule>
     <!-- Проверяет интервал между сокращенными операторами IF. -->
-    <rule ref="Squiz.ControlStructures.InlineIfDeclaration"></rule>
+    <rule ref="Squiz.ControlStructures.InlineIfDeclaration">
+        <exclude name="Squiz.ControlStructures.InlineIfDeclaration.NoBrackets" />
+    </rule>
     <!--
         Гарантирует, что все ключевые слова структуры управления написаны в нижнем регистре.
         Ключевые слова php if, else, elseif, foreach, for, do, switch, while, try и catch должны быть строчными.
@@ -676,7 +693,10 @@
     <!-- Ключевые слова php function, public, private, protected и static должны быть в нижнем регистре. -->
     <rule ref="Squiz.Functions.LowercaseFunctionKeywords"></rule>
     <!-- Убедитесь, что объявления однострочных и многострочных функций определены правильно. -->
-    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration"></rule>
+    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration">
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnNewLine" />
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
+    </rule>
     <!-- Гарантирует правильность названий методов. -->
     <!-- <rule ref="Squiz.NamingConventions.ValidFunctionName"></rule> -->
     <!-- Проверяет именование переменных и переменных-членов. -->
@@ -684,7 +704,9 @@
     <!-- Гарантирует, что индексы объектов записываются в точечной нотации. -->
     <rule ref="Squiz.Objects.DisallowObjectStringIndex"></rule>
     <!-- Гарантирует, что объекты присваиваются переменной при создании экземпляра. -->
-    <rule ref="Squiz.Objects.ObjectInstantiation"></rule>
+    <rule ref="Squiz.Objects.ObjectInstantiation">
+        <exclude name="Squiz.Objects.ObjectInstantiation.NotAssigned" />
+    </rule>
     <!-- Гарантирует, что за последним элементом объекта не следует запятая. -->
     <rule ref="Squiz.Objects.ObjectMemberComma"></rule>
     <!-- A Sniff to enforce the use of IDENTICAL type operators rather than EQUAL operators. -->
@@ -744,7 +766,7 @@
     <!-- Убедитесь, что операторы приведения не содержат пробелов. -->
     <rule ref="Squiz.WhiteSpace.CastSpacing"></rule>
     <!-- Проверяет, чтобы управляющие структуры имели правильный интервал между скобками. -->
-    <!-- <rule ref="Squiz.WhiteSpace.ControlStructureSpacing"></rule> -->
+    <rule ref="Squiz.WhiteSpace.ControlStructureSpacing"></rule>
     <!-- Проверяет, есть ли одна пустая строка перед закрывающей фигурной скобкой функции. -->
     <!-- <rule ref="Squiz.WhiteSpace.FunctionClosingBraceSpace"></rule> -->
     <!-- Проверяет, нет ли пустой строки после открывающей фигурной скобки функции. -->
@@ -789,7 +811,9 @@
     <!-- После ключевых слов php static, public, private и protected должен быть один пробел. -->
     <rule ref="Squiz.WhiteSpace.ScopeKeywordSpacing"></rule>
     <!-- Убедитесь, что перед точкой с запятой нет пробелов. -->
-    <rule ref="Squiz.WhiteSpace.SemicolonSpacing"></rule>
+    <rule ref="Squiz.WhiteSpace.SemicolonSpacing">
+        <exclude name="Squiz.WhiteSpace.SemicolonSpacing.Incorrect" />
+    </rule>
     <!--
         Проверяет наличие ненужных пробелов.
 
@@ -801,7 +825,10 @@
         </properties>
     </rule>
 
-
-
+    <file>bin/</file>
+    <file>config/</file>
+    <file>public/</file>
+    <file>src/</file>
+    <file>tests/</file>
 
 </ruleset>

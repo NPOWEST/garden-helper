@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset name="NPOWEST rule set"
-    xmlns="http://pmd.sf.net/ruleset/1.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
-    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
-    <description>NPOWEST code style rule set</description>
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+                     http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="
+                     http://pmd.sf.net/ruleset_xml_schema.xsd">
 
     <rule ref="rulesets/cleancode.xml/BooleanArgumentFlag"/>
     <rule ref="rulesets/cleancode.xml/ElseExpression"/>
@@ -50,7 +51,6 @@
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
         <properties>
-            <property name="maxmethods" value="12"/>
             <property name="ignorepattern" value="(^(set|get))i"/>
         </properties>
     </rule>
@@ -63,6 +63,11 @@
     <rule ref="rulesets/controversial.xml"/>
 
     <rule ref="rulesets/design.xml"/>
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+            <property name="maximum" value="16"/>
+        </properties>
+    </rule>
 
     <rule ref="rulesets/naming.xml/LongClassName"/>
     <rule ref="rulesets/naming.xml/ShortClassName"/>
@@ -86,10 +91,11 @@
     <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable" >
         <properties>
             <property name="allow-unused-foreach-variables" value="true"/>
+            <property name="exceptions" value="i" />
         </properties>
     </rule>
     <rule ref="rulesets/unusedcode.xml/UnusedPrivateMethod" />
 
-    <exclude-pattern>var/*</exclude-pattern>
-    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>/var/*</exclude-pattern>
+    <exclude-pattern>/vendor/*</exclude-pattern>
 </ruleset>

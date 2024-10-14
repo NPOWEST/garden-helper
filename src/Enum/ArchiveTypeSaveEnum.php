@@ -2,6 +2,7 @@
 
 /**
  * @see https://npowest.ru
+ *
  * @license Shareware
  * @copyright (c) 2019-2024 NPOWest
  */
@@ -14,19 +15,19 @@ use Npowest\GardenHelper\Trait\EnumTrait;
 
 enum ArchiveTypeSaveEnum: string
 {
-	use EnumTrait;
+    use EnumTrait;
 
-	case s = 's';
+    case s = 's';
 
-	case n = 'n';
+    case n = 'n';
 
-	case w = 'w';
+    case w = 'w';
 
-	case iD = 'iD';
+    case iD = 'iD';
 
-	case iH = 'iH';
+    case iH = 'iH';
 
-	case wD = 'wD';
+    case wD = 'wD';
 
-	case wH = 'wH';
+    case wH = 'wH';
 }//end enum

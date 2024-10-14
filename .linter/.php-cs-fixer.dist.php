@@ -1,21 +1,18 @@
 <?php
 
-// https://cs.symfony.com
-
 $finder = (new PhpCsFixer\Finder())
-    ->in('./')
-    ->notPath([
-        'phpinsights.php',
-    ])
+    ->in(__DIR__)
+    ->exclude('var')
 ;
 
 return (new PhpCsFixer\Config())
+    ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
         '@DoctrineAnnotation' => true,
 
-        'header_comment' => ['header' => "@see https://npowest.ru\n@license Shareware\n@copyright (c) 2019-2024 NPOWest", 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'both'],
+        'header_comment' => ['header' => "@see https://npowest.ru\n\n@license Shareware\n@copyright (c) 2019-2024 NPOWest", 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'both'],
 
         /** Alias */
 
@@ -145,12 +142,14 @@ return (new PhpCsFixer\Config())
 
         /** Import */
 
+        // Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace.
+        'fully_qualified_strict_types' =>  ['import_symbols' => true],
         // Imports or fully qualifies global classes/functions/constants.
         'global_namespace_import' => ['import_classes' => true, 'import_constants' => true, 'import_functions' => true],
         // There MUST be group use for the same namespaces.
         'group_import' => true,
         // Ordering use statements.
-        'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']],
+        'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['class', 'function', 'const']],
         // There MUST be one use keyword per declaration.
         'single_import_per_statement' => false,
 
@@ -257,5 +256,6 @@ return (new PhpCsFixer\Config())
         // //     'position_after_control_structures'           => 'next',
         // //     'position_after_functions_and_oop_constructs' => 'next'
         // // ],
-    ])->setIndent("\t")
-    ->setFinder($finder);
+    ])
+    ->setFinder($finder)
+;

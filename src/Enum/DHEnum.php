@@ -2,6 +2,7 @@
 
 /**
  * @see https://npowest.ru
+ *
  * @license Shareware
  * @copyright (c) 2019-2024 NPOWest
  */
@@ -12,7 +13,7 @@ namespace Npowest\GardenHelper\Enum;
 
 enum DHEnum: string
 {
-	case d = 'D';
+    case d = 'D';
 
-	case h = 'H';
+    case h = 'H';
 }//end enum

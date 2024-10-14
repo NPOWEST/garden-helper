@@ -1,4 +1,14 @@
-/.phpintel
-/vendor
+.phpintel
+vendor
+tmp
+install_linter.sh
+test.sh
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+###< squizlabs/php_codesniffer ###
+
+###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.cache
-/tmp
+###< friendsofphp/php-cs-fixer ###
+
+.phpmd.result-cache.php

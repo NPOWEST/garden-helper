@@ -2,6 +2,7 @@
 
 /**
  * @see https://npowest.ru
+ *
  * @license Shareware
  * @copyright (c) 2019-2024 NPOWest
  */
@@ -12,13 +13,13 @@ namespace Npowest\GardenHelper\Enum;
 
 enum LastTypeEnum: string
 {
-	case c = 'c';
+    case c = 'c';
 
-	case d = 'd';
+    case d = 'd';
 
-	case h = 'h';
+    case h = 'h';
 
-	case set = 'set';
+    case set = 'set';
 
-	case current = 'current';
+    case current = 'current';
 }//end enum

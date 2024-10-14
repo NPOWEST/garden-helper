@@ -2,6 +2,7 @@
 
 /**
  * @see https://npowest.ru
+ *
  * @license Shareware
  * @copyright (c) 2019-2024 NPOWest
  */
@@ -12,9 +13,9 @@ namespace Npowest\GardenHelper\Enum;
 
 enum SIEnum: string
 {
-	case s = 's';
+    case s = 's';
 
-	case i = 'i';
+    case i = 'i';
 
-	case si = 'si';
+    case si = 'si';
 }//end enum

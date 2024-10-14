@@ -2,6 +2,7 @@
 
 /**
  * @see https://npowest.ru
+ *
  * @license Shareware
  * @copyright (c) 2019-2024 NPOWest
  */
@@ -25,251 +26,271 @@ use function count;
  */
 final class ArchiveCollection implements ArrayAccess, IteratorAggregate
 {
-	private bool $checkAvailability = true;
+    private bool $checkAvailability = true;
 
-	/** @var array<string, array<string, DataCollection>> [type : [date : DataCollection]] */
-	private array $data = [SIEnum::s->value => [], SIEnum::i->value => []];
+    /** @var array<string, array<string, DataCollection>> [type : [date : DataCollection]] */
+    private array $data = [SIEnum::s->value => [], SIEnum::i->value => []];
 
-	private ?DataCollection $total = null;
+    private ?DataCollection $total = null;
 
-	/**
-	 * Retrieves an ArrayIterator over the configuration values.
-	 *
-	 * @return ArrayIterator An iterator over all config data
-	 * @phpstan-ignore missingType.generics
-	 */
-	public function getIterator(): ArrayIterator
-	{
-		return new ArrayIterator($this->data);
-	}//end getIterator()
+    /**
+     * Retrieves an ArrayIterator over the configuration values.
+     *
+     * @return ArrayIterator An iterator over all config data
+     *
+     * @phpstan-ignore missingType.generics
+     */
+    public function getIterator(): ArrayIterator
+    {
+        return new ArrayIterator($this->data);
+    }//end getIterator()
 
-	/**
-	 * Checks if the specified config value exists.
-	 *
-	 * @param SIEnum $key
-	 *
-	 * @throws InvalidKey
-	 */
-	public function offsetExists(mixed $key): bool
-	{
-		if (! $key instanceof SIEnum)
-		{
-			throw new InvalidKey('SIEnum');
-		}
+    /**
+     * Checks if the specified config value exists.
+     *
+     * @param SIEnum $key
+     *
+     * @throws InvalidKey
+     */
+    public function offsetExists(mixed $key): bool
+    {
+        if (! $key instanceof SIEnum)
+        {
+            throw new InvalidKey('SIEnum');
+        }
 
-		return isset($this->data[$key->value]);
-	}//end offsetExists()
+        return isset($this->data[$key->value]);
+    }//end offsetExists()
 
-	/**
-	 * Retrieves a  value.
-	 *
-	 * @param SIEnum $key
-	 *
-	 * @throws InvalidKey
-	 */
-	public function offsetGet(mixed $key): mixed
-	{
-		if (! $key instanceof SIEnum)
-		{
-			throw new InvalidKey('SIEnum');
-		}
+    /**
+     * Retrieves a  value.
+     *
+     * @param SIEnum $key
+     *
+     * @throws InvalidKey
+     */
+    public function offsetGet(mixed $key): mixed
+    {
+        if (! $key instanceof SIEnum)
+        {
+            throw new InvalidKey('SIEnum');
+        }
 
-		return $this->data[$key->value];
-	}//end offsetGet()
+        return $this->data[$key->value];
+    }//end offsetGet()
 
-	/**
-	 * Temporarily overwrites the value of a  variable.
-	 *
-	 * The  change will not persist. It will be lost after the request
-	 *
-	 * @param SIEnum                        $key
-	 * @param array<string, DataCollection> $value
-	 *
-	 * @throws SetException
-	 */
-	public function offsetSet(mixed $key, mixed $value): void
-	{
-		throw new SetException();
-	}//end offsetSet()
+    /**
+     * Temporarily overwrites the value of a  variable.
+     *
+     * The  change will not persist. It will be lost after the request
+     *
+     * @param ?SIEnum                       $key
+     * @param array<string, DataCollection> $value
+     *
+     * @throws SetException
+     */
+    public function offsetSet(mixed $key, mixed $value): void
+    {
+        throw new SetException();
+    }//end offsetSet()
 
-	/**
-	 * Called when deleting a  value directly, triggers an error.
-	 *
-	 * @param SIEnum $key
-	 *
-	 * @throws DeleteException
-	 */
-	public function offsetUnset(mixed $key): void
-	{
-		throw new DeleteException();
-	}//end offsetUnset()
+    /**
+     * Called when deleting a  value directly, triggers an error.
+     *
+     * @param SIEnum $key
+     *
+     * @throws DeleteException
+     */
+    public function offsetUnset(mixed $key): void
+    {
+        throw new DeleteException();
+    }//end offsetUnset()
 
-	public function init(string $date): void
-	{
-		$this->data[SIEnum::s->value][$date] = new DataCollection();
-		$this->data[SIEnum::i->value][$date] = new DataCollection();
-	}//end init()
+    public function init(string $date): void
+    {
+        $this->data[SIEnum::s->value][$date] = new DataCollection();
+        $this->data[SIEnum::i->value][$date] = new DataCollection();
+    }//end init()
 
-	public function initSi(string $date): void
-	{
-		$this->data[SIEnum::si->value] = [];
+    public function initSi(string $date): void
+    {
+        $this->data[SIEnum::si->value] = [];
 
-		$this->data[SIEnum::si->value][$date] = $this->data[SIEnum::s->value][$date];
-	}//end initSi()
+        $this->data[SIEnum::si->value][$date] = $this->data[SIEnum::s->value][$date];
+    }//end initSi()
 
-	public function addSi(string $date): void
-	{
-		$this->data[SIEnum::si->value][$date] = $this->data[SIEnum::s->value][$date];
-	}//end addSi()
+    public function addSi(string $date): void
+    {
+        $this->data[SIEnum::si->value][$date] = $this->data[SIEnum::s->value][$date];
+    }//end addSi()
 
-	public function getFirstKey(SIEnum $type): ?string
-	{
-		reset($this->data[$type->value]);
+    public function getFirstKey(SIEnum $type): ?string
+    {
+        reset($this->data[$type->value]);
 
-		return key($this->data[$type->value]);
-	}//end getFirstKey()
+        return key($this->data[$type->value]);
+    }//end getFirstKey()
 
-	public function getLastKey(SIEnum $type): ?string
-	{
-		end($this->data[$type->value]);
+    public function getLastKey(SIEnum $type): ?string
+    {
+        end($this->data[$type->value]);
 
-		return key($this->data[$type->value]);
-	}//end getLastKey()
+        return key($this->data[$type->value]);
+    }//end getLastKey()
 
-	public function trim(string $date1, string $date1i, string $date2): void
-	{
-		$this->trimAct(SIEnum::s, $date1, $date2);
-		$this->trimAct(SIEnum::i, $date1i, $date2);
-	}//end trim()
+    public function trim(string $date1, string $date1i, string $date2): void
+    {
+        $this->trimAct(SIEnum::s, $date1, $date2);
+        $this->trimAct(SIEnum::i, $date1i, $date2);
+    }//end trim()
 
-	private function trimAct(SIEnum $key, string $date1, string $date2): void
-	{
-		$first = 0;
-		$i     = 0;
-		$count = count($this->data[$key->value]);
-		$last  = $count;
-		foreach ($this->data[$key->value] as $date => $val)
-		{
-			if (! $val->empty() && $date > $date1)
-			{
-				$first = $i;
+    private function trimAct(SIEnum $key, string $date1, string $date2): void
+    {
+        $data     = $this->data[$key->value];
+        $dataKeys = array_keys($data);
 
-				break;
-			}
-			++$i;
-		}
-		if ($i === $count)
-		{
-			$this->data[$key->value] = [];
+        $count = count($this->data[$key->value]);
 
-			return;
-		}
+        $first = 1;
+        $last  = $count;
+        for ($i = 0; $i < $count; ++$i)
+        {
+            $date = $dataKeys[$i];
+            $val  = $data[$date];
+            if (! $val->empty() && $date > $date1)
+            {
+                $first = $i;
 
-		end($this->data[$key->value]);
-		for ($i = $count; $i > 0; --$i)
-		{
-			// @phpstan-ignore method.nonObject
-			if (! current($this->data[$key->value])->empty() && key($this->data[$key->value]) < $date2)
-			{
-				$last = $i;
+                break;
+            }
+        }
 
-				break;
-			}
-			prev($this->data[$key->value]);
-		}
+        for ($i = $count - 1; $i >= 0; --$i)
+        {
+            $date = $dataKeys[$i];
+            $val  = $data[$date];
 
-		$this->data[$key->value] = array_slice($this->data[$key->value], $first, $last - $first);
-	}//end trimAct()
+            if (! $val->empty() && $date < $date2)
+            {
+                $last = $i + 1;
 
-	public function setCheckAvailability(bool $check): void
-	{
-		$this->checkAvailability = $check;
-	}//end setCheckAvailability()
+                break;
+            }
+        }
 
-	private function checkData(SIEnum $type, string $date): bool
-	{
-		if (! isset($this->data[$type->value][$date]))
-		{
-			if ($this->checkAvailability)
-			{
-				return false;
-			}
-			$this->data[$type->value][$date] = new DataCollection();
-		}
+        if ($first >= $last)
+        {
+            $this->data[$key->value] = [];
 
-		return true;
-	}//end checkData()
+            return;
+        }
 
-	public function set(SIEnum $type, string $date, string $key, mixed $value): void
-	{
-		if (! $this->checkData($type, $date))
-		{
-			return;
-		}
-		$this->data[$type->value][$date]->set($key, $value);
-	}//end set()
+        $this->data[$key->value] = array_slice($data, $first, $last - $first);
+    }//end trimAct()
 
-	public function overlay(SIEnum $type, string $date, DataCollection $data): void
-	{
-		if (! $this->checkData($type, $date))
-		{
-			return;
-		}
-		$this->data[$type->value][$date]->overlay($data);
-	}//end overlay()
+    public function setCheckAvailability(bool $check): void
+    {
+        $this->checkAvailability = $check;
+    }//end setCheckAvailability()
 
-	public function setFromString(SIEnum $type, string $date, string $value): void
-	{
-		if (! $this->checkData($type, $date))
-		{
-			return;
-		}
-		$this->data[$type->value][$date]->setFromString($value);
-	}//end setFromString()
+    private function checkData(SIEnum $type, string $date): bool
+    {
+        if (! isset($this->data[$type->value][$date]))
+        {
+            if ($this->checkAvailability)
+            {
+                return false;
+            }
 
-	public function setErrorFromString(SIEnum $type, string $date, string $value): void
-	{
-		if (! $this->checkData($type, $date))
-		{
-			return;
-		}
-		$this->data[$type->value][$date]->setErrorFromString($value);
-	}//end setErrorFromString()
+            $this->data[$type->value][$date] = new DataCollection();
+        }
 
-	/**
-	 * @param array<string, mixed> $value
-	 */
-	public function setFromArray(SIEnum $type, string $date, array $value): void
-	{
-		if (! $this->checkData($type, $date))
-		{
-			return;
-		}
-		$this->data[$type->value][$date]->setFromArray($value);
-	}//end setFromArray()
+        return true;
+    }//end checkData()
 
-	public function sort(): void
-	{
-		ksort($this->data[SIEnum::i->value]);
-		ksort($this->data[SIEnum::s->value]);
-	}//end sort()
+    public function set(SIEnum $type, string $date, string $key, mixed $value): void
+    {
+        if (! $this->checkData($type, $date))
+        {
+            return;
+        }
 
-	public function hasTotal(): bool
-	{
-		return $this->total instanceof DataCollection && ! $this->total->empty();
-	}//end hasTotal()
+        $this->data[$type->value][$date]->set($key, $value);
+    }//end set()
 
-	/**
-	 * @param array<string, mixed> $data
-	 */
-	public function setTotal(array $data): void
-	{
-		$this->total = new DataCollection();
-		$this->total->setFromArray($data);
-	}//end setTotal()
+    public function overlay(SIEnum $type, string $date, DataCollection $data): void
+    {
+        if (! $this->checkData($type, $date))
+        {
+            return;
+        }
 
-	public function getTotal(): ?DataCollection
-	{
-		return $this->total;
-	}//end getTotal()
+        $this->data[$type->value][$date]->overlay($data);
+    }//end overlay()
+
+    public function setFromString(SIEnum $type, string $date, string $value): void
+    {
+        if (! $this->checkData($type, $date))
+        {
+            return;
+        }
+
+        $this->data[$type->value][$date]->setFromString($value);
+    }//end setFromString()
+
+    public function setErrorFromString(SIEnum $type, string $date, string $value): void
+    {
+        if (! $this->checkData($type, $date))
+        {
+            return;
+        }
+
+        $this->data[$type->value][$date]->setErrorFromString($value);
+    }//end setErrorFromString()
+
+    /**
+     * @param array<string, mixed> $value
+     */
+    public function setFromArray(SIEnum $type, string $date, array $value): void
+    {
+        if (! $this->checkData($type, $date))
+        {
+            return;
+        }
+
+        $this->data[$type->value][$date]->setFromArray($value);
+    }//end setFromArray()
+
+    public function sort(): void
+    {
+        ksort($this->data[SIEnum::i->value]);
+        ksort($this->data[SIEnum::s->value]);
+    }//end sort()
+
+    public function empty(): bool
+    {
+        $isIEmpty = empty($this->data[SIEnum::i->value]);
+        $isSEmpty = empty($this->data[SIEnum::s->value]);
+
+        return $isIEmpty && $isSEmpty;
+    }//end empty()
+
+    public function hasTotal(): bool
+    {
+        return $this->total instanceof DataCollection && ! $this->total->empty();
+    }//end hasTotal()
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function setTotal(array $data): void
+    {
+        $this->total = new DataCollection();
+        $this->total->setFromArray($data);
+    }//end setTotal()
+
+    public function getTotal(): ?DataCollection
+    {
+        return $this->total;
+    }//end getTotal()
 }//end class

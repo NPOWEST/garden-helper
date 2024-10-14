@@ -2,6 +2,7 @@
 
 /**
  * @see https://npowest.ru
+ *
  * @license Shareware
  * @copyright (c) 2019-2024 NPOWest
  */
@@ -12,27 +13,27 @@ namespace Npowest\GardenHelper\Trait;
 
 trait EnumTrait
 {
-	/**
-	 * @return list<string>
-	 */
-	public static function names(): array
-	{
-		return array_column(self::cases(), 'name');
-	}//end names()
+    /**
+     * @return list<string>
+     */
+    public static function names(): array
+    {
+        return array_column(self::cases(), 'name');
+    }//end names()
 
-	/**
-	 * @return list<int|string>
-	 */
-	public static function values(): array
-	{
-		return array_column(self::cases(), 'value');
-	}//end values()
+    /**
+     * @return list<int|string>
+     */
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }//end values()
 
-	/**
-	 * @return array<string, list|string>
-	 */
-	public static function array(): array
-	{
-		return array_combine(self::values(), self::names());
-	}//end array()
-}
+    /**
+     * @return array<string, int|string>
+     */
+    public static function array(): array
+    {
+        return array_combine(self::names(), self::values());
+    }//end array()
+}//end trait
