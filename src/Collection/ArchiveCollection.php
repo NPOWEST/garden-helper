@@ -138,26 +138,26 @@ final class ArchiveCollection implements ArrayAccess, IteratorAggregate
         return key($this->data[$type->value]);
     }//end getLastKey()
 
-    public function trim(string $date1, string $date1i, string $date2): void
+    public function trim(string $dateStart, string $dateStartI, string $dateEnd): void
     {
-        $this->trimAct(SIEnum::s, $date1, $date2);
-        $this->trimAct(SIEnum::i, $date1i, $date2);
+        $this->trimAct(SIEnum::s, $dateStart, $dateEnd);
+        $this->trimAct(SIEnum::i, $dateStartI, $dateEnd);
     }//end trim()
 
-    private function trimAct(SIEnum $key, string $date1, string $date2): void
+    private function trimAct(SIEnum $key, string $dateStart, string $dateEnd): void
     {
         $data     = $this->data[$key->value];
         $dataKeys = array_keys($data);
 
         $count = count($this->data[$key->value]);
 
-        $first = 1;
+        $first = 11;
         $last  = $count;
         for ($i = 0; $i < $count; ++$i)
         {
             $date = $dataKeys[$i];
             $val  = $data[$date];
-            if (! $val->empty() && $date > $date1)
+            if (! $val->empty() && $date > $dateStart)
             {
                 $first = $i;
 
@@ -165,12 +165,19 @@ final class ArchiveCollection implements ArrayAccess, IteratorAggregate
             }
         }
 
+        if ($first == -1)
+        {
+            $this->data[$key->value] = [];
+
+            return;
+        }
+
         for ($i = $count - 1; $i >= 0; --$i)
         {
             $date = $dataKeys[$i];
             $val  = $data[$date];
 
-            if (! $val->empty() && $date < $date2)
+            if (! $val->empty() && $date < $dateEnd)
             {
                 $last = $i + 1;
 

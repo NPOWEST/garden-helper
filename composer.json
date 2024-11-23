@@ -3,6 +3,7 @@
     "description": "Emum, Collection, Functions for NPOWEST Garden",
     "license": "MIT",
     "type": "library",
+    "version": "1.0.9",
     "authors": [
         {
             "name": "Virus3D",
